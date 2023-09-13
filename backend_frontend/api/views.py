@@ -1,10 +1,14 @@
 import pymongo
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
+client = pymongo.MongoClient('mongodb://localhost:27017')
+db = client['TempUser']
 
 #rendering templates
 def index(request):
@@ -55,28 +59,59 @@ def save_data(request):
 
 
 
+def home(request):
+    """
+    Create a new user.
+    """
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
 
+        hashed_password = make_password(password)
+
+        user = db.users.find_one({'username': username})
+
+        if user:
+            # Retrieve the stored hashed password from the user document
+            stored_password = user['password']
+
+            # Hash the input password using the same salt as the stored password
+            if check_password(hashed_password, stored_password):
+                messages.success(request,"Correct Password") 
+                return render(request,  'index.html')  # Passwords match, user is authenticated
+            else:
+                messages.success(request,"Incorrect Password or User does not exist")  # Passwords do not match
+                return redirect('home')
+
+    else:
+        return render(request, 'home.html')
 
 def create_user(request):
     """
     Create a new user.
     """
-    username = request.POST['username']
-    password = request.POST['password']
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
 
-    client = pymongo.MongoClient('mongodb://localhost:27017')
-    db = client['TempUser']
+        client = pymongo.MongoClient('mongodb://localhost:27017')
+        db = client['TempUser']
+        hashed_password = make_password(password)
 
-    # Create a new user document.
-    user = {
-        'username': username,
-        'password': password,
-    }
+        existing_user = db.users.find_one({'username': username})
+        if existing_user:
+            messages.success(request,'Username already exists. Please choose another username or login')
+            return render(request, 'create.html')
+        # Create a new user document.
+        user = {
+            'username': username,
+            'password': hashed_password,
+        }
 
-    db.users.insert_one(user)
+        db.users.insert_one(user)
 
-    return HttpResponse('User created successfully!')
-
+        messages.success(request,'User created successfully!')
+    return render(request, 'create.html')
 
 def get_users(request):
     """
@@ -89,6 +124,12 @@ def get_users(request):
     users = db.users.find()
 
     return render(request, 'users.html', {'users': users})
+
+
+def logout_user(request):
+	logout(request)
+	messages.success(request, "You Have Been Logged Out...")
+	return redirect('home')
 
 def main(request):
     print("get main accessed")
