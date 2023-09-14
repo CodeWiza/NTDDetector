@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(to bottom, #436070, #3aaf9f);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.top {
+    text-align: center;
+    height: 50px;
+    background-color: #3aaf9f; 
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top h1 {
+    color: #fff; 
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    text-transform: uppercase;
+}
+h3
+{
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
+    background-color: #2a8b84; 
+}
+
+.navbar-text {
+    color: #fff; 
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: #fff; 
+}
+
+.logout_bar {
+    background-color: #2a8b84; 
+    margin-top: 0;
+}
+
+.logout {
+    margin-top: 0;
+    margin-left: 1360px;
+    width: 30px;
+    color: #fff; 
+    font-size: 24px;
+}
+.logout::before {
+    content: '\2192';
+    margin-top: 0;
+    
+    width: 30px;
+    color: #fff; 
+    font-size: 24px;
+}
+
+.sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    z-index: 1000;
+    padding-top: 20px;
+    background-color: #fff; 
+}
+
+.sidebar-sticky {
+    position: relative;
+}
+
+.sidebar .nav-link {
+    color: #3aaf9f; 
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-top: 0;
+    }
+}
