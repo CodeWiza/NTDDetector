@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% csrf_token %}
+    <form action="/prediction_form/save" method="post" enctype="multipart/form-data">
+          
+        <label for="blood_group">Blood Group:</label>
+        <select name="blood_group" id="blood_group">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="AB">AB</option>
+            <option value="O">O</option>
+        </select>
+        <br>
+        <label for="work_condition">Work Condition:</label>
+        <select name="work_condition" id="work_condition">
+            <option value="Office">Office</option>
+            <option value="Factory">Factory</option>
+            <option value="Construction">Construction</option>
+            <option value="Other">Other</option>
+        </select>
+        <br>
+        <label for="city">City:</label>
+        <input type="text" name="city" id="city">
+        <br>
+        <label for="age">Age:</label>
+        <input type="number" name="age" id="age">
+        <br>
+        <label for="image">Upload an Image:</label>
+        <input type="file" name="image" id="image">
+        <br>
+        <input type="submit" value="Upload Image">
+    </form>
+</body>
+</html>

@@ -14,3 +14,6 @@ class UserInputs(models.Model):
     city = models.CharField(max_length=20)
     age = models.IntegerField()
     image = models.ImageField(upload_to='user_inputs')
+
+    date = models.DateField
+    time = models.TimeField

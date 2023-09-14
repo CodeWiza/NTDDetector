@@ -4,6 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth.decorators import login_required
+import PIL.Image
+import datetime
+import bson
+# from sorl.thumbnail import ImageField, get_thumbnail
 
 
 #rendering templates
@@ -11,17 +15,16 @@ def index(request):
     return render(request,  'index.html')
 
 def prediction_form(request):
-    return render(request, '')
+    return render(request, 'prediction_form.html')
 
 
 def dashboard(request):
-    return render(request,'')
+    return render(request,'dashboard.html')
 
 
 
 
 @csrf_exempt
-@login_required
 def save_data(request):
     if request.method == 'POST':
         blood_group = request.POST['blood_group']
@@ -29,26 +32,58 @@ def save_data(request):
         city = request.POST['city']
         age = request.POST['age']
         image = request.FILES['image']
+
+        # image = get_thumbnail(image, '100x100', quality=99, format='JPEG')
+        # resize::
+        
+        new_width=100
+        new_height=100
+
+        #converting to byte
+        resized_image = PIL.Image.open(image).resize((new_width, new_height))
+
+        # share image now for prediction
+        # return HttpResponse({{resized_image}})
+
+        #to store in mongodb
+        image_data = resized_image.tobytes()
         
         client = pymongo.MongoClient('mongodb://localhost:27017')
         db = client['TempUser']
 
         # Get the phone number of the logged in user.
-        phone_number = request.user.phone_number
+        #phone_number = request.user.phone_number
+
+        # Get the current date and time.
+        now = datetime.datetime.now()
+
+        date = now.date()
+        date_str = date.isoformat()
+        date_dict = dict(date=date_str)
+
+        time = now.time()
+        time_str = time.strftime('%H:%M')
+        time_dict = dict(time=time_str)
 
         # Save the data to the MongoDB database.
         user_data = {
-            'phone_number': phone_number,
+            #'phone_number': phone_number,
             'blood_group': blood_group,
             'work_condition': work_condition,
             'city': city,
             'age': age,
-            'image': image,
+            'image': image_data,
+            'date': date_dict,
+            'time': time_dict,
         }
 
         db.user_inputs.insert_one(user_data)
+        # with open('resized_image.png', 'wb') as f:
+        #     f.write(resized_image)
+        # return HttpResponseRedirect('/dashboard')  
+        # return HttpResponse('<h4>image downloaded</h4>')
 
-        # Redirect to the dashboard route.
+        # # Redirect to the dashboard route.
         return HttpResponseRedirect('/dashboard')
 
 
