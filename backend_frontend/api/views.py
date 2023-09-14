@@ -23,7 +23,6 @@ def dashboard(request):
 
 
 
-
 @csrf_exempt
 def save_data(request):
     if request.method == 'POST':
@@ -52,7 +51,7 @@ def save_data(request):
         db = client['TempUser']
 
         # Get the phone number of the logged in user.
-        #phone_number = request.user.phone_number
+        phone_number = request.user.phone_number
 
         # Get the current date and time.
         now = datetime.datetime.now()
@@ -67,7 +66,7 @@ def save_data(request):
 
         # Save the data to the MongoDB database.
         user_data = {
-            #'phone_number': phone_number,
+            # 'phone_number': phone_number,
             'blood_group': blood_group,
             'work_condition': work_condition,
             'city': city,
