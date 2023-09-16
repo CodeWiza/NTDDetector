@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path('C:\\Users\\swast\\OneDrive\\Desktop\\SIH_2023\\NTDDetector\\backend_frontend')
+# print(BASE_DIR)
+# print(Path.joinpath(BASE_DIR,'templates_css'))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'sorl.thumbnail',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +64,16 @@ ROOT_URLCONF = 'backend_frontend.urls'
 # CSRF_VIEW_MIDDLEWARE = [
 #     'django.middleware.csrf.CsrfViewMiddleware',
 # ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
+
 
 TEMPLATES = [
     {
@@ -131,7 +149,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'templates_css')]
+
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

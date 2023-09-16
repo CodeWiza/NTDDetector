@@ -8,7 +8,7 @@ class User(models.Model):
 
 # for storing details of user given for prescription
 class UserInputs(models.Model):
-    phone_number = models.CharField(max_length=10)
+    username = models.CharField(max_length=20)
     blood_group = models.CharField(max_length=10)
     work_condition = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
