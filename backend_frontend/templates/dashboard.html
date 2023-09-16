@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,59 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>PATIENT'S LOGIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../templates css/style.css">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
 </head>
 
 <body>
     <div class="top">
-        <h1>NTD Detector</h1>
+            <h1>NTD Detector</h1>
     </div>
-    <nav class="navbar">
-        <span class="navbar-text">PATIENT'S LOGIN</span>
-    </nav>
+    
 
     <div class="logout_bar">
-        <a class="logout" href="https://www.google.com">Log Out</a>
+        <a class="logout" href="{% url "logout" %}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+          </svg> Log Out</a>
     </div>
 
-    <div class="container-fluid">
-                <div class="sidebar-sticky pt-3">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="Dashboard.html">
-                                <span data-feather="home"></span> Home <span class="sr-only">(current)</span>
+    <div class="container">
+        
+                
+                        <div class="direction">
+                            <a class="element" id="home" href="{% url "display_dashboard" %}">
+                                Home
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'studprofile'  %}">
-                                <span data-feather="user"></span> Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./prediction_form.html">
-                                <span data-feather="calendar"></span> Predict Symptoms
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3>Reports</h3>
-                </div>
-                <div class="container">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row"></div>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive"></div>
+                        <div class="direction">
+                            <a class="element" id="profile" href="{% url "display_dashboard" %}">
+                            Profile
+                            </a>
+                            
                         </div>
-                    </div>
-                </div>
-            </main>
+                        <div class="direction">
+                            <a class="element" id="predict"  href="{% url "prediction_form" %}">
+                            Predict Symptoms
+                            </a>
+                        </div>   
         
     </div>
+    <div class="imgc"><img src="{% static 'img/dashboard_img2.png' %}"></div>  
+
+
+    
+    <h3>Reports</h3>
+    <table>
+        <thead>
+        <tr>
+        <th>Sr No.</th>
+        <th>Blood Group</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Predicted Disease</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user_input in data %}
+        <tr>
+        <td>{{ user_input.s_no }}</td>
+        <td>{{ user_input.blood_grp }}</td>
+        <td>{{ user_input.date }}</td>
+        <td>{{ user_input.time }}</td>
+        <td>{{ user_input.predicted_disease }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        
+        {% if not data %}
+        <p>No records found.</p>
+        {% endif %}
     
 </body>
 </html>
