@@ -1,6 +1,5 @@
 import pymongo
 from django.http import HttpResponse, HttpResponseRedirect
-import PIL.Image
 import datetime
 from django.contrib import messages
 from django.shortcuts import render,redirect
@@ -9,6 +8,19 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+import keras
+from django.conf import settings
+import os
+import numpy as np
+import io
+import base64
+import os
+import numpy as np
+
+from keras import backend as K
+from keras.applications.imagenet_utils import preprocess_input
+from keras.models import load_model
+import tensorflow as tf
 # from sorl.thumbnail import ImageField, get_thumbnail
 
 
@@ -43,14 +55,22 @@ def dashboard(request):
         date = document['date'].get('date')
         time = document['time'].get('time')
         blood_grp = document['blood_group']
-        predicted_disease = "XYZ"
+        disease1 = document['disease'].get('0')
+        
+        disease2 = document['disease'].get('1')
+        
+        probability1 = document['probability'].get('0')
 
+        probability2 = document['probability'].get('1')
         data.append({
             's_no': cnt,
             'date': date,
             'time': time,
             'blood_grp': blood_grp,
-            'predicted_disease': predicted_disease,
+            'disease1': disease1,
+            'disease2': disease2,
+            'probability1': probability1,
+            'probability2':probability2,
         })
 
         cnt += 1
@@ -66,6 +86,87 @@ def dashboard(request):
 
 
 
+import cv2
+
+
+def convert_ndarray_to_list(ndarray):
+    data = []
+    for i in range(ndarray.shape[0]):
+        data.append( ndarray[i]*100)
+    print(data)
+    context = {
+        'data': data
+    }
+    return context
+
+
+
+def convert_img(img):
+    '''
+        This function returns the preprocessed and changed dimension of nparray of image passed 
+    '''
+    img_bytes = io.BytesIO(img.read())
+    img = tf.keras.utils.load_img(img_bytes, target_size=(100, 100))
+    x = tf.keras.utils.img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)
+    return x
+
+def sort_convert(preds):
+    disease = ["Benign", "Malignant"]
+    disease=list_to_dict(disease)
+    # Get the NumPy array of probabilities
+    probabilities = np.array(preds)
+    # Sort the probabilities in descending order
+    # sorted_probabilities = np.sort(probabilities)[::-1]
+
+    # Get the top 2 probabilities
+    # top_2_probabilities = sorted_probabilities[:2]
+    # rounded_array = np.around(top_2_probabilities, decimals=2)
+    probability= numpy_ndarray_to_dict(probabilities)
+    # Get the indices of the top 2 probabilities
+    # top_2_indices = np.argsort(probabilities)[::-1][:2]
+
+
+    # Create a context dictionary
+    context = {
+        "disease": disease,
+        "probability": probability,
+    }
+    return context
+
+def list_to_dict(list):
+    """Converts a list to a dictionary.
+
+    Args:
+        list: A list.
+
+    Returns:
+        A dictionary.
+    """   
+
+    dict = {}
+    for i in range(len(list)):
+        dict[i] = list[i]
+    return dict
+
+
+def numpy_ndarray_to_dict(ndarray):
+  """Converts a NumPy array to a dictionary.
+
+  Args:
+    ndarray: A NumPy array.
+
+  Returns:
+    A dictionary.
+  """
+
+  flattened_array = ndarray.flatten()
+  dict = {}
+  for i in range(len(flattened_array)):
+    dict[i] = flattened_array[i]*100
+  return dict
+
 @csrf_exempt
 def save_data(request):
     if request.method == 'POST':
@@ -73,23 +174,19 @@ def save_data(request):
         work_condition = request.POST['work_condition']
         city = request.POST['city']
         age = request.POST['age']
-        image = request.FILES['image']
+        img = request.FILES['image']
 
-        # image = get_thumbnail(image, '100x100', quality=99, format='JPEG')
-        # resize::
-        
-        new_width=100
-        new_height=100
+        # Load the ML model.
+        ML_MODELS_DIR = settings.ML_MODELS_DIR
+        model = keras.models.load_model(os.path.join(ML_MODELS_DIR, 'MLmodel.h5'))
+        # Convert and preprocess the image file.
+        x=convert_img(img)
+        preds = model.predict(x)
+        context=sort_convert(preds)
+        print(context)
 
-        #converting to byte
-        resized_image = PIL.Image.open(image).resize((new_width, new_height))
-
-        # share image now for prediction
-        # return HttpResponse({{resized_image}})
 
         #to store in mongodb
-        image_data = resized_image.tobytes()
-        
         client = pymongo.MongoClient('mongodb://localhost:27017')
         db = client['TempUser']
 
@@ -106,7 +203,14 @@ def save_data(request):
         time = now.time()
         time_str = time.strftime('%H:%M')
         time_dict = dict(time=time_str)
-
+        img_bytes = io.BytesIO(img.read())
+        img_base64 = base64.b64encode(img_bytes.getvalue()).decode()
+        # disease= dict(context['disease_names'])
+        # print("disease dict")
+        # print(disease)
+        # Convert the integer key in the probability dictionary to a string.
+        context["probability"] = {str(k): v for k, v in context["probability"].items()}
+        context["disease"] = {str(k): v for k, v in context["disease"].items()}
         # Save the data to the MongoDB database.
         user_data = {
             'username': username,
@@ -114,12 +218,18 @@ def save_data(request):
             'work_condition': work_condition,
             'city': city,
             'age': age,
-            'image': image_data,
+            'image': img_base64,
             'date': date_dict,
             'time': time_dict,
+            'disease': context["disease"],
+            'probability': context["probability"]
         }
-
-        db.user_inputs.insert_one(user_data)
+        print(user_data)
+        try:
+            db.user_inputs.insert_one(user_data)
+        except Exception as e:
+            # Handle any errors that may occur.
+            print(e)
         
         return HttpResponseRedirect('/dashboard')
 
@@ -128,11 +238,8 @@ def save_data(request):
 
 
 
-
+#register function
 def create_user(request):
-    """
-    Create a new user.
-    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -157,10 +264,9 @@ def create_user(request):
         return HttpResponseRedirect('/dashboard')
     return render(request, 'login.html')
 
+
+# login function
 def login_user(request):
-    """
-    Create a new user.
-    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -174,9 +280,6 @@ def login_user(request):
             if user: 
                 # Retrieve the stored hashed password from the user document
                 stored_password = user['password']
-                #hashed_password = make_password(password)
-                print("Stored Password:", stored_password)
-                print("Hashed Input Password:", password)
                 # Hash the input password using the same salt as the stored password
                 if check_password(password , stored_password):
                     request.session['username'] = username
@@ -192,6 +295,7 @@ def login_user(request):
         return render(request, 'login.html')
 
 
+#logout Function
 
 def logout_user(request):
     logout(request)

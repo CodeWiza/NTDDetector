@@ -58,14 +58,15 @@
         <th>Predicted Disease</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody> 
         {% for user_input in data %}
         <tr>
         <td>{{ user_input.s_no }}</td>
         <td>{{ user_input.blood_grp }}</td>
         <td>{{ user_input.date }}</td>
         <td>{{ user_input.time }}</td>
-        <td>{{ user_input.predicted_disease }}</td>
+        <td>{{ user_input.disease1 }} {{user_input.probability1 }}</td>
+        <td>{{ user_input.disease2 }} {{user_input.probability2 }}</td>
         </tr>
         {% endfor %}
         </tbody>

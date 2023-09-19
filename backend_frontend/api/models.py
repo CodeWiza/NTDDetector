@@ -17,3 +17,5 @@ class UserInputs(models.Model):
 
     date = models.DateField
     time = models.TimeField
+    disease = models.JSONField(blank=True, null=True)
+    probability = models.JSONField(blank=True, null=True)
