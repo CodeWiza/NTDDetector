@@ -164,7 +164,7 @@ def numpy_ndarray_to_dict(ndarray):
   flattened_array = ndarray.flatten()
   dict = {}
   for i in range(len(flattened_array)):
-    dict[i] = flattened_array[i]*100
+    dict[i] = np.round(flattened_array[i]*100,2)
   return dict
 
 @csrf_exempt
