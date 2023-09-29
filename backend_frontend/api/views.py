@@ -32,7 +32,6 @@ def login(request):
 def prediction_form(request):
     return render(request, 'prediction_form.html')
 
-
 def dashboard(request):
     client = pymongo.MongoClient('mongodb://localhost:27017')
     db = client['TempUser']
@@ -60,7 +59,7 @@ def dashboard(request):
         disease2 = document['disease'].get('1')
         
         probability1 = document['probability'].get('0')
-
+        probability1 = probability1
         probability2 = document['probability'].get('1')
         data.append({
             's_no': cnt,
@@ -169,12 +168,15 @@ def numpy_ndarray_to_dict(ndarray):
 
 @csrf_exempt
 def save_data(request):
+    print("Save data wala hai",request.POST)
     if request.method == 'POST':
         blood_group = request.POST['blood_group']
         work_condition = request.POST['work_condition']
         city = request.POST['city']
         age = request.POST['age']
-        img = request.FILES['image']
+        latitude = request.POST.get("latitude")
+        longitude = request.POST.get("longitude")
+        img = request.FILES['image']  
 
         # Load the ML model.
         ML_MODELS_DIR = settings.ML_MODELS_DIR
@@ -222,7 +224,9 @@ def save_data(request):
             'date': date_dict,
             'time': time_dict,
             'disease': context["disease"],
-            'probability': context["probability"]
+            'probability': context["probability"],
+            'latitude':latitude,
+            'longitude':longitude
         }
         print(user_data)
         try:
@@ -305,3 +309,31 @@ def logout_user(request):
 
     messages.success(request, "You Have Been Logged Out...")
     return HttpResponseRedirect('/')
+
+#location implementation done
+
+from django.http import JsonResponse
+
+from geopy.geocoders import Nominatim
+from functools import partial
+from django.views.decorators.csrf import csrf_protect
+'''
+#@csrf_protect
+def location_user(request):
+    print(request.POST)
+    if request.method == "POST":
+        latitude = request.POST.get("latitude")
+        longitude = request.POST.get("longitude")
+        geoLoc = Nominatim(user_agent="GetLoc")
+        locname = geoLoc.reverse(( latitude, longitude))
+        print(locname.address)
+        reverse = partial(geoLoc.reverse, language="en")
+        co=("latitude,longitude")
+        #string=str(latitude)
+        print(latitude,"gggggg")
+        print(reverse( "28.6129,77.2295"))#"19.2233974, 72.9485119"))
+        #Do something with latitude and longitude, such as storing in a database or processing the data.
+
+        return JsonResponse({"message": "Location data received and processed."})
+    #return JsonResponse({"error": "Invalid request method."})
+    return render(request, 'locn.html')'''

@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "prediction_form.css" %}">
-    <title>Prdiction Form</title>
+    <link rel="stylesheet" href="{% static 'prediction_form.css' %}">
+    <title>Prediction Form</title>
 </head>
 <body>
     <div class="top">
         <h1>NTD Detector</h1>
     </div>
-    <form action="/prediction_form/save" method="post" enctype="multipart/form-data">
+    <form action="/prediction_form/save" method="post" enctype="multipart/form-data" id="myForm">
         {% csrf_token %}
         <div class="input-container" id="firstblock">
             <div class="image1">
@@ -49,15 +49,18 @@
             <input type="number" name="age" id="age" class="input-field" placeholder="Age">
         </div>
 
-        
-            
-        
-
         <label for="image">Upload an Image:</label>
         <input type="file" name="image" id="image">
+
         <br>
-        <input type="submit" value="Upload Image">
+        <input type="button" value="Get Location" id="getLocation">
+        <input type="hidden" name="latitude" id="latitude" value="0">
+        <input type="hidden" name="longitude" id="longitude" value="0">
+        <input type="hidden" name="address" id="address" value="None">
+        <p id="location_text"></p>
+        <input type="submit" value="Upload Image" id="uploadButton">
     </form>
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{%static 'locn.js'%}"></script>
 </body>
 </html>
