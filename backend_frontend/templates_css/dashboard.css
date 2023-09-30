@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.top {
+    text-align: center;
+    height: 50px;
+    background-color: #3aaf9f; 
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.top h1 {
+    
+    color: #fff; 
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+h3
+{
+    color: rgb(0, 0, 0);
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+}
+.logout_bar {
+    background-color: #3aaf9f; 
+    margin-top: 0;
+}
+
+.logout {
+    margin-top: 0;
+    margin-left: 1355px;
+    width: 30px;
+    color: #fff; 
+    font-size: 24px;
+}
+
+
+
+.direction {
+    padding: 30px;
+    display: block;
+    clear: both;
+}
+
+
+.element {
+    position: relative;
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    background-image: linear-gradient(to right, #0074bf, #3aaf9f);
+    margin-bottom: 100px;
+    color: #fff;
+    width: 200px;
+    height: 100px;
+}
+
+
+.element:hover {
+    background-image: linear-gradient(to right, #0a1b50db, #73d3c6);; 
+    color: rgb(255, 255, 255); 
+}
+
+
+
+
+
+.imgc{
+    position: absolute;
+    left: 950px;
+    top: 90px;
+    margin: 0;
+    border: 0;
+    width: 490px;
+}
+
+img {
+    padding-top: 10px;
+    width: 90%;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; 
+}
+
+
+thead {
+    background-color: #0074bf; 
+    color: white; 
+}
+
+
+th {
+    padding: 10px;
+    text-align: left;
+}
+
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; 
+}
+
+
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc; /* Add a bottom border to separate rows */
+}
