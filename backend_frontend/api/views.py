@@ -26,6 +26,9 @@ import tensorflow as tf
 
 
 #rendering templates
+def Homepage(request):
+    return render(request,  'Homepage.html')
+
 def login(request):
     return render(request,  'login.html')
 
