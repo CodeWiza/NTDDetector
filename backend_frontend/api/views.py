@@ -30,7 +30,9 @@ def Homepage(request):
     return render(request,  'Homepage.html')
 
 def login(request):
-    return render(request,  'login.html')
+    if 'username' not in request.session:
+        return render(request,  'login.html')
+    return render(request,  'dashboard.html')
 
 def prediction_form(request):
     return render(request, 'prediction_form.html')
