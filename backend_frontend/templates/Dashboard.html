@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>PATIENT'S LOGIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="../templates_css/dashboard.css">
 </head>
 
 <body>
     <div class="top">
-            <h1>NTD Detector</h1>
+            <h1>आरोग्य<span>Marg</span></h1>
     </div>
     
 
@@ -23,27 +24,26 @@
     </div>
 
     <div class="container">
-        
-                
-                        <div class="direction">
-                            <a class="element" id="home" href="{% url "display_dashboard" %}">
-                                Home
-                            </a>
-                        </div>
-                        <div class="direction">
-                            <a class="element" id="profile" href="{% url "display_dashboard" %}">
-                            Profile
-                            </a>
-                            
-                        </div>
-                        <div class="direction">
-                            <a class="element" id="predict"  href="{% url "prediction_form" %}">
-                            Predict Symptoms
-                            </a>
-                        </div>   
-        
+        <div class="direction">
+            <a class="element" id="home" href="{% url "display_dashboard" %}">
+                <span class="link-text"><div class="text">Home</div></span>
+                <div class="progress-bar"></div>
+            </a>
+        </div>
+        <div class="direction">
+            <a class="element" id="profile" href="{% url "display_dashboard" %}">
+                <span class="link-text"><div class="text">Profile</div></span>
+                <div class="progress-bar"></div>
+            </a>
+        </div>
+        <div class="direction">
+            <a class="element" id="predict" href="{% url "prediction_form" %}">
+                <span class="link-text"><div class="text">Predict Symptoms</div></span>
+                <div class="progress-bar"></div>
+            </a>
+        </div>
     </div>
-    <div class="imgc"><img src="{% static 'img/dashboard_img2.png' %}"></div>  
+    <div class="imgc"><img src="../templates_css/img/dashboard_img2.png"></div>  
 
 
     
@@ -56,6 +56,7 @@
         <th>Date</th>
         <th>Time</th>
         <th>Predicted Disease</th>
+        <th>Probability</th>
         </tr>
         </thead>
         <tbody> 
