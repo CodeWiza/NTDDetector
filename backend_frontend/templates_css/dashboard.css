@@ -10,7 +10,7 @@ body {
 .top {
     text-align: center;
     height: 50px;
-    background-color: #3aaf9f; 
+    background-color: #106eea; 
     margin: 0;
     display: flex;
     align-items: center;
@@ -21,7 +21,7 @@ body {
 .top h1 {
     
     color: #fff; 
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 2rem;
     font-weight: bold;
     margin: 0;
@@ -36,13 +36,13 @@ h3
     font-family: 'Montserrat', sans-serif;
 }
 .logout_bar {
-    background-color: #3aaf9f; 
+    background-color: #106eea; 
     margin-top: 0;
 }
 
 .logout {
     margin-top: 0;
-    margin-left: 1355px;
+    margin-left: 1345px;
     width: 30px;
     color: #fff; 
     font-size: 24px;
@@ -58,35 +58,56 @@ h3
 
 
 .element {
+    font-family: Arial, sans-serif;
     position: relative;
-    margin-bottom: 15px;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 10px;
     text-align: center;
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s ease;
-    background-image: linear-gradient(to right, #0074bf, #3aaf9f);
-    margin-bottom: 100px;
-    color: #fff;
-    width: 200px;
-    height: 100px;
+    
+    background-color: whitesmoke;
+    
+    
+    width: 250px; 
+    height: 20px;
+    display: block;
 }
 
-
-.element:hover {
-    background-image: linear-gradient(to right, #0a1b50db, #73d3c6);; 
-    color: rgb(255, 255, 255); 
+.element .text {
+    color: black;
+    position: relative; /* Make sure the z-index works */
+    z-index: 1;
 }
 
+.element:hover .text {
+    color: rgb(255, 255, 255);
+    z-index: 2;
+}
+
+/* Add the following CSS code */
 
 
 
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 40px;
+    background-color: #106eea;
+    transition: width 0.3s ease;
+    
+}
+
+.element:hover .progress-bar {
+    width: 100%;
+}
 
 .imgc{
     position: absolute;
     left: 950px;
-    top: 90px;
+    top: 130px;
     margin: 0;
     border: 0;
     width: 490px;

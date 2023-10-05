@@ -7,7 +7,7 @@ body {
 .top {
     text-align: center;
     height: 50px;
-    background-color: #3aaf9f; 
+    background-color: #106eea; 
     margin: 0;
     display: flex;
     align-items: center;
@@ -15,7 +15,7 @@ body {
 }
 .top h1 {
     color: #fff; 
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 2rem;
     font-weight: bold;
     margin: 0;
@@ -55,7 +55,8 @@ body {
 ::placeholder {
     color: #f2eeea; 
 }
-img{
+#id1
+{
     align-self: right;
     width: 100%;
     height: auto;
@@ -69,4 +70,72 @@ img{
     float: right;
     margin: 0;
     border: 0;
+    
 }
+
+#id2
+{
+    align-self: left;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border: 2px solid #2e9b8b;
+    border-radius: 10px;
+}
+.imgp
+{
+    display: block;
+    width: 500px;
+    margin: 0;
+    border: 0;
+}
+
+#upload input[type="submit"] 
+{
+    
+    border: none;
+    display: flex;
+    font-family: Arial, sans-serif;
+    background-color: #0074bf;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+}
+
+#upload input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+  
+
+/* Styles for the "Choose File" button */
+.input-field[type="file"] {
+    display: none; /* Hide the default file input */
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0074bf;
+    color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background-color: #0056b3;
+}
+
+
+.imgp {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+}
+
+
