@@ -32,7 +32,7 @@ def Homepage(request):
 def login(request):
     if 'username' not in request.session:
         return render(request,  'login.html')
-    return render(request,  'dashboard.html')
+    return HttpResponseRedirect('/dashboard')
 
 def prediction_form(request):
     return render(request, 'prediction_form.html')
